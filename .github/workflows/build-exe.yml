@@ -12,16 +12,26 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+
       - run: pip install pyinstaller
+
+      # 👇 debug que funciona no PowerShell
       - name: List files (debug)
+        shell: pwsh
         run: |
-          echo "PWD:" & cd
-          echo "Tree:" & dir /s
+          Write-Host "Current directory:"
+          Get-Location
+          Write-Host "Listing files recursively:"
+          Get-ChildItem -Recurse
+
+      # 👇 build apontando para o seu caminho atual
       - name: Build EXE
         run: pyinstaller --onefile --name NPS_Index_CLI .github/workflows/nps_index_cli.py
+
       - uses: actions/upload-artifact@v4
         with:
           name: NPS_Index_CLI_windows
