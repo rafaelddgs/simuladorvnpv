@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - .github/workflows/nps_index_cli.py
+      - nps_index_cli.py
       - .github/workflows/build-exe.yml
 
 jobs:
@@ -19,18 +19,15 @@ jobs:
 
       - run: pip install pyinstaller
 
-      # 👇 debug que funciona no PowerShell
-      - name: List files (debug)
+      # (opcional: debug)
+      - name: List files
         shell: pwsh
         run: |
-          Write-Host "Current directory:"
-          Get-Location
-          Write-Host "Listing files recursively:"
+          Write-Host "Arquivos no diretório:"
           Get-ChildItem -Recurse
 
-      # 👇 build apontando para o seu caminho atual
       - name: Build EXE
-        run: pyinstaller --onefile --name NPS_Index_CLI .github/workflows/nps_index_cli.py
+        run: pyinstaller --onefile --name NPS_Index_CLI nps_index_cli.py
 
       - uses: actions/upload-artifact@v4
         with:
