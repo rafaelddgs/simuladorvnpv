@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     paths:
-      - nps_index_cli.py
+      - .github/workflows/nps_index_cli.py
       - .github/workflows/build-exe.yml
 
 jobs:
@@ -16,7 +16,12 @@ jobs:
         with:
           python-version: "3.11"
       - run: pip install pyinstaller
-      - run: pyinstaller --onefile --name NPS_Index_CLI nps_index_cli.py
+      - name: List files (debug)
+        run: |
+          echo "PWD:" & cd
+          echo "Tree:" & dir /s
+      - name: Build EXE
+        run: pyinstaller --onefile --name NPS_Index_CLI .github/workflows/nps_index_cli.py
       - uses: actions/upload-artifact@v4
         with:
           name: NPS_Index_CLI_windows
