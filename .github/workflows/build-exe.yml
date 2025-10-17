@@ -1,0 +1,23 @@
+name: Build Windows EXE
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - nps_index_cli.py
+      - .github/workflows/build-exe.yml
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install pyinstaller
+      - run: pyinstaller --onefile --name NPS_Index_CLI nps_index_cli.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NPS_Index_CLI_windows
+          path: dist/NPS_Index_CLI.exe
